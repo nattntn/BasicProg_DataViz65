@@ -19,6 +19,17 @@
 2. นางสาวณัฐนิช หิรัญชวโรจน์ 633020552-8
 3. นายเฉลิมเกียรติ คำชะนาม 633021013-3
 
+# เชื่อมต่อไดร์ฟ
+```
+from google.colab import drive
+drive.mount('/content/drive')
+```
+# เรียกอ่านไฟล์ 
+## .CSV
+```
+unit = pd.read_csv('/content/drive/MyDrive/BPDV65/opendata_unittype.csv') # path drive ที่ไฟล์ .csv ต้องการอ่าน
+unit.head()
+```
 # Chapter1:[Functions, print, Loop, if ](https://github.com/natthanich/BasicProg_DataViz65/blob/main/Basic_Programming_Concepts.ipynb):point_left:	
 ## Functions ($f(x) = y$) :dog:
 def function_name(input_x):
