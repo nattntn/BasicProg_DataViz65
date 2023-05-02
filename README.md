@@ -568,6 +568,7 @@ matplotlib.rcParams['figure.figsize']=[30,30] #กำหนดขนาดขอ
 plt.subplot(1,3,1)  # subplot(มีกี่แถว, มีกี่หลัก, เป็นตัวที่เท่าไหร่)
 ```
 # Chapter5:[DataViz02_Data_Distribution_](https://github.com/natthanich/BasicProg_DataViz65/blob/main/DataViz02_Data_Distribution_.ipynb):cry:
+มีวนลูป ทำกราฟ
 ## Scatter Plot
 ดูการกระจายของข้อมูล  // เอาข้อมูลมาพอตเป็นจุด โดยตำแหน่งแต่ละค่า ค่าในคอลัมน์
 ![image](https://user-images.githubusercontent.com/108257658/235701372-45b1a5f1-47f4-45b5-b788-d9bb852a8162.png)
@@ -704,8 +705,42 @@ plt.boxplot(df['SepalLength'],vert=False,showmeans=True,meanprops={'marker':'o'}
 ```
 ![image](https://user-images.githubusercontent.com/108257658/235710413-0c4c7895-4164-48dc-997e-7f1da8b1a219.png)
 
+# Chapter6:[DataViz03_Data_Distribution_(PCA)](https://github.com/natthanich/BasicProg_DataViz65/blob/main/DataViz03_Data_Distribution_(PCA).ipynb).ipynb):point_left:
+[PCA](https://wendynavarrete.com/principal-component-analysis-with-numpy/)
+```
+pd.plotting.scatter_matrix(example_df); #.scatter_matrix(ข้อมูล) // เอาเเต่ละคอลัมน์มาเรียง แล้วในเเต่ละช่องจะมีค่าต่างๆ/// ข้อเสียไม่สามารถเเสดงสีได้
+```
+![image](https://user-images.githubusercontent.com/108257658/235713561-4e6a96b1-b7b4-4836-aeef-2c179b4af104.png)
 
+# Chapter7:[DataViz04_Data_Comparison](https://github.com/natthanich/BasicProg_DataViz65/blob/main/DataViz04_Data_Comparison.ipynb):point_left:
+quiz 7 | Hw 7 | Hw4 | Hw 2
+## เปรียบเทียบ ข้อมูล ด้วย coordinate plot // plot แต่ละค่ามาเทียบกัน
+```
+plt.text(1.5,4,'do not join unrelated dots',fontsize= 20, color ='r') # เพิ่มตัวหนังสือในกราฟ
+```
+## Bar chart // กราฟแท่ง // ใช้ในการเปรียบเทียบ
+```
+plt.bar([1,2,3],sample_data['PetalLength'],color=['r','g','b']) #เปลี่ยนสี เเท่งกราฟ
+plt.xticks([1,2,3], sample_data.reset_index()['Name'], rotation='vertical')
+plt.title('Comparison between average petal length of 3 iris flowers')
+plt.grid(True) # เพิ่มตารางในเเนวแกน Y  เพื่อใช้ในการเปรียบเพที่ยบว่า ต่าง กันเท่าไหร่
+plt.ylabel('size (cm)');
+```
+![image](https://user-images.githubusercontent.com/108257658/235717615-adff7a58-c16b-4848-8ca4-29f742e84267.png)
 
+```
+import numpy as np
+width = 0.2 #กำหนดความกว้างของแท่ง 
+#1-width เขิยบทาง ซ้าย 1 แท่ง เพื่อความสวยงาม
+
+plt.bar([1, 2],[sample_data['PetalLength'][1],sample_data['PetalWidth'][1]],width,color='g',label='versicolor') # แท่งที่อยู่ตรงกลาง #ดอกที่ 2 versicolor
+plt.bar([1-width, 2-width],[sample_data['PetalLength'][0],sample_data['PetalWidth'][0]],width,color='r',label='setosa') #ดอกที่ 1 setosa ขยับซ้าย
+plt.bar([1+width, 2+width],[sample_data['PetalLength'][2],sample_data['PetalWidth'][2]],width,color='b',label='virginica') #ดอกที่ 1 setosa ขยับซ้าย
+
+plt.xticks([1,2], ['Petal Length','Petal Width'])
+plt.legend();
+```
+![image](https://user-images.githubusercontent.com/108257658/235717875-1cdee1d7-8243-431b-b0ec-09a9d405f63a.png)
 
 
 
