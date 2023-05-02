@@ -396,7 +396,7 @@ mat_X[:2,:2]  #เลือกตั้งแต่แถวที่ 0- ก่�
 --> array([[ 8, 16],
            [16, 32]])
 ```           
-# Chapter3:[pandas101]((https://github.com/natthanich/BasicProg_DataViz65/blob/main/pandas101.ipynb)):zipper_mouth_face:
+# Chapter3:[pandas101](https://github.com/natthanich/BasicProg_DataViz65/blob/main/pandas101.ipynb):zipper_mouth_face:
 ## ดูข้อมูลคร่าว ๆ
  ```
  .head() # ดูข้อมูล 10 แถวแรก
