@@ -29,6 +29,9 @@ drive.mount('/content/drive')
 ```
 unit = pd.read_csv('/content/drive/MyDrive/BPDV65/opendata_unittype.csv') # path drive ที่ไฟล์ .csv ต้องการอ่าน
 unit.head()
+--------------------------------------------------------------------------------------------------------
+df = pd.read_csv('https://raw.github.com/pandas-dev/pandas/master/pandas/tests/io/data/csv/iris.csv')
+df # read csv บน web ได้เลย
 ```
 ## excel
 ```
@@ -498,6 +501,211 @@ this[this['province_name_th']=='ขอนแก่น'] #หาบ้านท�
 project_nodup = project.drop_duplicates(subset=['project_id']) #drop อันซ้ำออกกก่อน
 unit['pricemin'] = unit['project_id'].map(project_nodup.set_index('project_id')['price_min'])  #เอา  price_min ของตาราง โปรเจค มาใส่ในตาราง unit 
 ```
+# ------- Visualization --------------
+# Chapter4:[DataViz01_Table_Data](https://github.com/natthanich/BasicProg_DataViz65/blob/main/DataViz01_Table_Data.ipynb):point_left:	
+https://datavizcatalogue.com
+* ดูว่ามีค่า/อักษรที่ไม่ซ้ำ กี่ค่า
+## data 	:sleepy:
+![image](https://user-images.githubusercontent.com/108257658/235694685-aa99d59d-54ce-4bd5-8bed-f17770716847.png)
+```
+set(df['Name']
+df['Name'].unique() # pd  หาค่าที่ ไม่ซ้ำของคอลัมน์ชื่อ
+```
+## Parallel Coordinates	:hot_face:
+```
+pd.plotting.parallel_coordinates(df, 'Name') #python  pd.plotting.parallel_coordinates(จากตาราง, 'จัดกลุ่มโดย')
+# จากกราฟ เขียวสด กับม่วง คล้ายกัย ส่วนเขียวอ่อน จะเล็กต่างจากเพื่อน
+```
+![image](https://user-images.githubusercontent.com/108257658/235693558-2cd90cfd-1e89-4cfa-94be-a010609e1d22.png)
+### select columns to show :cold_face:
+```
+pd.plotting.parallel_coordinates(df, 'Name',cols = ['SepalLength','PetalLength','SepalWidth','PetalWidth']) 
+```
+![image](https://user-images.githubusercontent.com/108257658/235693959-5100712f-5016-4d94-9deb-ed49d193d3e3.png)
+```
+pd.plotting.parallel_coordinates(df, 'Name',cols = ['SepalLength','PetalLength']) # cols = ['SepalLength','PetalLength'] เลือกเฉพาะ คอลัมน์ที่อยากทำมาเเสดง
+#กลีบดอกกับกลีบเลี้ยง มีขนาดต่างกันมั้ย
+```
+![image](https://user-images.githubusercontent.com/108257658/235694191-96ab0d72-4974-4dbb-ace5-01d7feb9417a.png)
+
+### change color	:disguised_face:
+https://matplotlib.org/stable/tutorials/colors/colors.html
+rgbcmyk
+```
+pd.plotting.parallel_coordinates(df, 'Name', color=['c','m','y'])
+```
+![image](https://user-images.githubusercontent.com/108257658/235695499-fed51e47-6ff6-43e9-a0e7-955e4d6234a6.png)
+```
+pd.plotting.parallel_coordinates(df, 'Name', color=[[0.6,0,0],[0,0,0.8],[0.2,0.4,0.7]]) # ใช้ค่า RGB สีผสม
+```
+![image](https://user-images.githubusercontent.com/108257658/235695703-e1321d0a-7127-426a-badd-f8373dd4183c.png)
+```
+pd.plotting.parallel_coordinates(df, 'Name', color=['#a73b24', '#F98EC5', '#88B46C']) # web color // html color
+```
+![image](https://user-images.githubusercontent.com/108257658/235695826-f702b0d3-9c6e-4fa5-88ac-4fe7993bbbc9.png)
+
+#### Specify color by colormap  // เซตของสี่ที่เข้ากัน :sunglasses:
+**https://matplotlib.org/stable/tutorials/colors/colormaps.html**
+```
+pd.plotting.parallel_coordinates(df, 'Name', colormap='magma')
+```
+![image](https://user-images.githubusercontent.com/108257658/235696610-de0281bd-b737-4ec7-87de-fc167d99b908.png)
+
+# Matplotlib	:confused:
+```
+from matplotlib import pyplot as plt #เพื่อ plot graph
+import matplotlib #เพื่อปรับแต่งขนาดของกราฟ
+```
+## Heatmap matrix:astonished:
+```
+plt.imshow(df.iloc[:,:-1],interpolation='nearest') # -1 ไม่เอาคอลัมน์สุดท้าย  // เข้ม มาก  สว่างน้อย
+plt.imshow(df.iloc[:,:-1],interpolation='nearest',cmap = 'hot')
+plt.imshow(df.iloc[50:100,:-1],interpolation='nearest',alpha = 0.8) # alpha ความเข้มจางของเส้นกราฟ
+```
+# ปรับขนาดภาพ :cold_sweat:
+```
+matplotlib.rcParams['figure.figsize']=[30,30] #กำหนดขนาดของ figure
+plt.subplot(1,3,1)  # subplot(มีกี่แถว, มีกี่หลัก, เป็นตัวที่เท่าไหร่)
+```
+# Chapter5:[DataViz02_Data_Distribution_](https://github.com/natthanich/BasicProg_DataViz65/blob/main/DataViz02_Data_Distribution_.ipynb):cry:
+## Scatter Plot
+ดูการกระจายของข้อมูล  // เอาข้อมูลมาพอตเป็นจุด โดยตำแหน่งแต่ละค่า ค่าในคอลัมน์
+![image](https://user-images.githubusercontent.com/108257658/235701372-45b1a5f1-47f4-45b5-b788-d9bb852a8162.png)
+```
+from matplotlib import pyplot as plt
+plt.scatter([1,-1],[2,-1]) # ( x,y)  ([จุดแรกในแกน x = 1, จุดสอง ค่าในแกน x = -1],[จุดแรกค่าในแกน y=2,จุดสองค่าในแกน y= -1 ])
+plt.scatter(df['PetalLength'],df['SepalLength']) #ความยาวกลีบดอก เทียบกับ ความยาวกลีบเลี้ยง
+```
+## เปลี่ยนสี 
+c = arr -like or list of col / col เลยก็ได้  // list กำหนดสีเเต่ละประเภทได้
+```
+plt.scatter(df['PetalLength'],df['SepalLength'],c='r')
+```
+### ระบุสีให้แต่ละจุด
+* แทนค่าชื่อดอกไม้ด้วยตัวอักษรแทนสี (r g b c m y k w)
+```
+df2 = df.replace({'Iris-setosa':'r', 'Iris-versicolor':'g', 'Iris-virginica':'b'})
+plt.scatter(df2['PetalLength'],df2['SepalLength'],c=df2['Name']) # ความยาวกลีบเลี้ยง กลีบดอก #จำนวนสมาชิก ของ x y c ต้องเท่ากัน len()
+```
+![image](https://user-images.githubusercontent.com/108257658/235702315-0dc2eef4-4ae1-482d-a626-c6a49b16aebe.png)
+
+## เพิ่มรายละเอียดกราฟ
+### ชื่อแกน
+```
+plt.xlabel('PetalLength') #ชื่อเเกน x
+plt.ylabel('SepalLength') # ชื่อแกน y
+```
+### ชื่อ marker
+```
+plt.scatter(df2['PetalLength'][:50],df2['SepalLength'][:50],c=df2['Name'][:50],label='setosa')
+plt.scatter(df2['PetalLength'][50:100],df2['SepalLength'][50:100],c=df2['Name'][50:100],label='versicolor')
+plt.scatter(df2['PetalLength'][100:],df2['SepalLength'][100:],c=df2['Name'][100:],label='verginiga')
+plt.legend()  #โชว์ // ให้วางตรงไหนของกราฟ
+```
+![image](https://user-images.githubusercontent.com/108257658/235704242-f81b6e4b-2b90-4d5e-aafe-dfac3f2c871e.png)
+
+### ชื่อกราฟ
+```
+plt.title('Comparing petal&sepal length of different iris flowers'); #ชื่อกราฟ
+```
+![image](https://user-images.githubusercontent.com/108257658/235704520-b63387ee-b045-490b-9a1f-698979efaa6c.png)
+
+## ใช้ ขนาดของ marker ในการแสดงค่าใน column
+s =  size เอาความกว้างของกลีบดอกมาเป็น size
+![image](https://user-images.githubusercontent.com/108257658/235705179-d3ad0883-454e-463f-adf5-5c41d1f22179.png)
+```
+plt.scatter(df2['PetalLength'][:50],df2['SepalLength'][:50],c=df2['Name'][:50],label='setosa',s=df2['PetalWidth'][:50])
+plt.scatter(df2['PetalLength'][50:100],df2['SepalLength'][50:100],c=df2['Name'][50:100],label='versicolor',s=df2['PetalWidth'][50:100])
+plt.scatter(df2['PetalLength'][100:],df2['SepalLength'][100:],c=df2['Name'][100:],label='verginiga',s=df2['PetalWidth'][100:])
+plt.legend()
+plt.xlabel('PetalLength')
+plt.ylabel('SepalLength')
+plt.title('comparing petal&sepal length of different iris flowers');
+```
+![image](https://user-images.githubusercontent.com/108257658/235705369-654f2525-0a50-4ca4-a258-468c9c7bf7fa.png)
+
+*ขยายของขนาด marker ที่เล็กเกินไป
+```
+plt.scatter(df2['PetalLength'][:50],df2['SepalLength'][:50],c=df2['Name'][:50],label='setosa',s=40*df2['PetalWidth'][:50])
+plt.scatter(df2['PetalLength'][50:100],df2['SepalLength'][50:100],c=df2['Name'][50:100],label='versicolor',s=40*df2['PetalWidth'][50:100])
+plt.scatter(df2['PetalLength'][100:],df2['SepalLength'][100:],c=df2['Name'][100:],label='verginiga',s=40*df2['PetalWidth'][100:])
+plt.legend()
+plt.xlabel('PetalLength')
+plt.ylabel('SepalLength')
+plt.title('comparing petal&sepal length of different iris flowers');
+```
+![image](https://user-images.githubusercontent.com/108257658/235705617-c0a4efa0-0cf4-4c27-80f1-16925846dee0.png)
+## ปรับความโปรงใสของ marker เพื่อให้มองเห็นจุดที่ถูกบัง (Bubble Chart)
+alpha 
+```
+plt.scatter(df2['PetalLength'][:50],df2['SepalLength'][:50],alpha=0.5,c=df2['Name'][:50],label='setosa',s=40*df2['PetalWidth'][:50])
+plt.scatter(df2['PetalLength'][50:100],df2['SepalLength'][50:100],alpha=0.5,c=df2['Name'][50:100],label='versicolor',s=40*df2['PetalWidth'][50:100])
+plt.scatter(df2['PetalLength'][100:],df2['SepalLength'][100:],alpha=0.5,c=df2['Name'][100:],label='verginiga',s=40*df2['PetalWidth'][100:])
+plt.legend()
+plt.xlabel('PetalLength')
+plt.ylabel('SepalLength')
+plt.title('comparing petal&sepal length of different iris flowers \n (sizes of the circle determine petal widths of the flowers)');
+```
+![image](https://user-images.githubusercontent.com/108257658/235705898-3d5c51b2-7210-428a-991d-4e734f78d2db.png)
+
+## เปลี่ยน หน้าตาของ Marker เพื่อความสวยงาม
+marker =  $c$ $ พอตตัวนส$
+```
+plt.scatter(df2['PetalLength'][:50],df2['SepalLength'][:50],alpha=0.5,c=df2['Name'][:50],label='setosa',s=40*df2['PetalWidth'][:50],marker='X')
+plt.scatter(df2['PetalLength'][50:100],df2['SepalLength'][50:100],alpha=0.5,c=df2['Name'][50:100],label='versicolor',s=40*df2['PetalWidth'][50:100],marker='X')
+plt.scatter(df2['PetalLength'][100:],df2['SepalLength'][100:],alpha=0.5,c=df2['Name'][100:],label='verginiga',s=40*df2['PetalWidth'][100:],marker='X')
+plt.legend()
+plt.xlabel('PetalLength')
+plt.ylabel('SepalLength')
+plt.title('comparing petal&sepal length of different iris flowers');
+```
+![image](https://user-images.githubusercontent.com/108257658/235706193-431719a3-02c9-4a51-8113-3988cacd0997.png)
+
+## แสดงแบบ 3 มิติ
+```
+plt.axes(projection = "3d")
+```
+# Boxplot
+
+![image](https://user-images.githubusercontent.com/108257658/235707886-ac6fb645-52b1-4a92-8473-744a5b36e097.png)
+![image](https://user-images.githubusercontent.com/108257658/235707945-832872ce-5cc9-4f53-b917-4f01f343de7c.png)
+
+```
+plt.boxplot(df['SepalLength']); #วาดการกระจายของความยาวกลีบเลี้ยง  // ; ปิด output ที่เป็นtext
+```
+![image](https://user-images.githubusercontent.com/108257658/235708373-36b4d76b-6aa2-4884-b73c-0b7d441de00b.png)
+
+```
+plt.boxplot(df['SepalLength'],vert=False) # defult = Ture
+```
+![image](https://user-images.githubusercontent.com/108257658/235708488-6fd5a99d-1409-4d06-8ab6-ad7537351a51.png)
+
+## median
+```
+ybp['medians'][0].get_xdata() #  xdata() ค่าในแนวแกน x
+ybp['medians'][0].get_ydata()  
+```
+## min
+```
+min(ybp['whiskers'][0].get_xdata()) #min หลังจาก ลบout liner
+```
+## max
+```
+max(ybp['whiskers'][1].get_xdata())
+```
+## q1
+```
+max(ybp['whiskers'][0].get_xdata())
+```
+## outlier
+```
+plt.boxplot(df['SepalLength'],vert=False,meanline=True,showmeans=True)
+plt.boxplot(df['SepalLength'],vert=False,showmeans=True,meanprops={'marker':'o'})
+```
+![image](https://user-images.githubusercontent.com/108257658/235710413-0c4c7895-4164-48dc-997e-7f1da8b1a219.png)
+
+
+
 
 
 
