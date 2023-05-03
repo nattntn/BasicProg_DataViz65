@@ -37,7 +37,14 @@ df # read csv บน web ได้เลย
 ```
 pd.read_excel('/content/drive/MyDrive/BPDV65/myunit.xlsx',sheet_name='unit1') # sheet_name='unit1' ชีทที่ชื่อ
 ```
-
+#เปลี่ยนชื่อ columns
+```
+opendata_unittype_clean.rename(columns={'count_parking': 'count_parking_unittype', 'count_elevator': 'count_elevator_unittype'}, inplace=True)
+```
+#ทำการเปลี่ยนค่าในตาราง  
+```
+opendata_volume_listing_clean.loc[opendata_volume_listing_clean['province_name_en'] == 'SAMUT PRAKAN','province_name_en'] ='Samut Prakan'
+```
 # บันทึกตารางเป็นไฟล์
 ##  save ตาราง
    *   .csv
